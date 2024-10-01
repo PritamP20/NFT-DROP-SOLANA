@@ -4,26 +4,20 @@ import { useEffect, useState } from "react";
 import { Toaster } from 'react-hot-toast';
 import toast from "react-hot-toast";
 
-import {
-  guestIdentity, Metaplex, walletAdapterIdentity
-} from "@metaplex-foundation/js";
-
+import { guestIdentity, Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { CANDY_MACHINE_ID } from "../utils";
 
-
 const styles = {
   wrapper: 'flex h-[100vh] w-[100vw] bg-[#1d1d1d] text-gray-200',
-  container:
-    'flex flex-col lg:flex-row flex-1 p-5 pb-20 lg:p-10 space-y-10 lg:space-y-0 ',
+  container: 'flex flex-col lg:flex-row flex-1 p-5 pb-20 lg:p-10 space-y-10 lg:space-y-0 ',
   buttonContainer: 'flex flex-col lg:flex-row flex-1 pt-5  space-y-10',
   infoSection: 'lg:w-2/3 px-10',
   mobileDisplaySection: 'h-[300px] flex w-full lg:hidden lg:w-1/3 mt-4',
   desktopDisplaySection: 'hidden lg:flex flex-1 lg:w-1/3',
-  mintButton:
-    'rounded-xl border border-gray-100 bg-transparent px-8 py-4 font-semibold text-gray-100 transition-all hover:bg-gray-100 hover:text-[#1d1d1d]',
-}
+  mintButton: 'rounded-xl border border-gray-100 bg-transparent px-8 py-4 font-semibold text-gray-100 transition-all hover:bg-gray-100 hover:text-[#1d1d1d]',
+};
 
 export default function Main() {
   const [metaplex, setMetaplex] = useState();
@@ -45,7 +39,7 @@ export default function Main() {
     );
   }, [connection, wallet]);
 
-  // Set up my state and update it every few seconds
+  // Fetch Candy Machine state
   useEffect(() => {
     if (!metaplex) return;
 
@@ -58,7 +52,7 @@ export default function Main() {
       } catch (error) {
         console.error("Error fetching Candy Machine state:", error);
         toast.error("An error occurred while fetching the Candy Machine state.");
-        setCandyStateError(error.message); // Ensure error is stored as a string
+        setCandyStateError(error.message);
       } finally {
         setCandyStateLoading(false);
         toast.success("Updated");
@@ -71,6 +65,7 @@ export default function Main() {
     return () => clearInterval(intervalId);
   }, [metaplex]);
 
+  // Mint Function
   const mint = async () => {
     if (!metaplex || !wallet || !wallet.publicKey) {
       toast.error("Wallet not connected or Metaplex instance not available");
@@ -100,7 +95,6 @@ export default function Main() {
       setTxLoading(false);
     }
   };
-  
 
   const soldOut = candyState?.itemsRemaining.eqn(0);
   const solAmount = candyState?.candyGuard?.guards?.solPayment?.lamports.toNumber() / LAMPORTS_PER_SOL;
@@ -121,7 +115,6 @@ export default function Main() {
 
           <Hero />
           <div>
-            {/* Candymachine states will go here! */}
             {candyStateLoading ? (
               <div>Loading</div>
             ) : candyStateError ? (

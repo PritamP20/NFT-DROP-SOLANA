@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "v1",
     "@metaplex-foundation/js": "^0.17.5",
+    "@metaplex-foundation/mpl-candy-machine": "^6.0.1",
     "@solana/wallet-adapter-base": "^0.9.18",
     "@solana/wallet-adapter-react": "^0.15.24",
     "@solana/wallet-adapter-react-ui": "^0.9.22",
